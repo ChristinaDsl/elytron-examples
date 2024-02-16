@@ -16,16 +16,22 @@ batch
 /subsystem=elytron/filesystem-realm=fsRealm:add-identity-attribute(identity=quickstartUser, name=Roles, value=[guest])
 
 # Add a simple-role-decoder
-/subsystem=elytron/simple-role-decoder=from-roles-attribute:add(attribute=Roles)
+#/subsystem=elytron/simple-role-decoder=from-roles-attribute:add(attribute=Roles)
 
 # Configure the security domain using the filesystem realm
 /subsystem=elytron/security-domain=fsSD:add(realms=[{realm=fsRealm, role-decoder=from-roles-attribute}], default-realm=fsRealm,permission-mapper=default-permission-mapper)
+
+#/subsystem=ejb3/application-security-domain=other:add(security-domain=ApplicationDomain)
 
 # Add the filesystem security domain mapping in the EJB3 subsystem
 /subsystem=ejb3/application-security-domain=other:write-attribute(name=security-domain,value=fsSD)
 
 # Update the sasl-authentication-factory to use the fsSD security domain
 /subsystem=elytron/sasl-authentication-factory=application-sasl-authentication:write-attribute(name=security-domain, value=fsSD)
+
+
+# Update the sasl-authentication-factory to use SCRAM-SHA-512
+/subsystem=elytron/sasl-authentication-factory=application-sasl-authentication:list-add(name=mechanism-configurations, value={mechanism-name=ANONYMOUS})
 
 # Update the sasl-authentication-factory to use SCRAM-SHA-512
 /subsystem=elytron/sasl-authentication-factory=application-sasl-authentication:list-add(name=mechanism-configurations, value={mechanism-name=SCRAM-SHA-512})

@@ -40,7 +40,7 @@ import org.jboss.ejb3.annotation.SecurityDomain;
  */
 @Stateless
 @Remote(SecuredEJBRemote.class)
-@RolesAllowed({ "guest" })
+@RolesAllowed({ "quickstartUser" })
 @SecurityDomain("other")
 public class SecuredEJB implements SecuredEJBRemote {
 
