@@ -15,16 +15,17 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+
 <configuration>
     <authentication-client xmlns="urn:elytron:client:1.5">
         <credential-stores>
-            <credential-store name="mycredstore">
+            <credential-store name="ldapcredstore">
                 <attributes>
                     <attribute name="keyStoreType" value="JCEKS"/>
-                    <attribute name="location" value="/tmp/mycredstore.cs"></attribute>
+                    <attribute name="location" value="/home/christina_/GitHub/elytron-examples/ejb-security/src/main/resources/ldapcredstore.cs"></attribute>
                 </attributes>
                 <protection-parameter-credentials>
-                    <clear-password password="StorePassword"/>
+                    <clear-password password="userPassword"/>
                 </protection-parameter-credentials>
             </credential-store>
         </credential-stores>
@@ -36,7 +37,7 @@
             <configuration name="default-config">
                 <set-user-name name="quickstartUser"/>
                 <credentials>
-                    <credential-store-reference store="mycredstore" alias="quickstartUser"/>
+                    <credential-store-reference store="ldapcredstore" alias="quickstartUser"/>
                 </credentials>
                 <sasl-mechanism-selector selector="SCRAM-SHA-512"/>
                 <providers>
@@ -46,4 +47,3 @@
         </authentication-configurations>
     </authentication-client>
 </configuration>
-
