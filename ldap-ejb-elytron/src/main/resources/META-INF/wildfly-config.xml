@@ -1,0 +1,21 @@
+<configuration>
+    <authentication-client>
+        <authentication-rules>
+            <rule use-configuration="default"/>
+        </authentication-rules>
+        <authentication-configurations>
+            <configuration name="default">
+                <sasl-mechanism-selector selector="PLAIN" />
+                <set-user-name name="admin"/>
+                <credentials>
+                    <clear-password password="secret"/>
+                </credentials>
+            </configuration>
+        </authentication-configurations>
+    </authentication-client>
+    <ejb-client>
+        <connections>
+            <connection uri="remote+http://localhost:8080"/>
+        </connections>
+    </ejb-client>
+</configuration>

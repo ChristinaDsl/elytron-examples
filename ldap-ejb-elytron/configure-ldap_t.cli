@@ -1,0 +1,11 @@
+/subsystem=elytron/dir-context=exampleDC:add(url="ldap://127.0.0.1:10389",principal="uid=admin,ou=system",credential-reference={clear-text="secret"})
+/subsystem=elytron/ldap-realm=exampleLR:add(dir-context=exampleDC,identity-mapping={search-base-dn="ou=system",rdn-identifier="uid",user-password-mapper={from="userPassword"}})
+
+# Create a caching realm
+/subsystem=elytron/caching-realm=exampleCachingRealm:add(realm=exampleLR,maximum-entries=1000,maximum-age=60000})
+
+/subsystem=elytron/simple-role-decoder=from-roles-attribute:add(attribute=Roles)
+/subsystem=elytron/security-domain=exampleLdapSD:add(realms=[{realm=exampleCachingRealm,role-decoder=from-roles-attribute}],default-realm=exampleCachingRealm,permission-mapper=default-permission-mapper)
+/subsystem=elytron/http-authentication-factory=example-ldap-http-auth:add(http-server-mechanism-factory=global,security-domain=exampleLdapSD,mechanism-configurations=[{mechanism-name=BASIC,mechanism-realm-configurations=[{realm-name=exampleApplicationDomain}]}])
+/core-service=management/management-interface=http-interface:write-attribute(name=http-authentication-factory, value=example-ldap-http-auth)
+reload
